@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Members Portal - Fitness Kingdom</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Oswald', sans-serif; color: white; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/images/gym-background.jpg') no-repeat center center fixed; background-size: cover; min-height: 100vh; letter-spacing: 1px;}
+        .highlight { color: #FD7A3F; }
+        .glass-card { background: rgba(0, 0, 0, 0.7); border: 1px solid #333; border-radius: 15px; padding: 30px; margin-top: 40px; }
+        .table { color: white; font-family: sans-serif; }
+        .table th { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 18px; letter-spacing: 1px;}
+        .table-dark { background-color: transparent; }
+        .btn-action { text-transform: uppercase; font-family: 'Oswald', sans-serif; letter-spacing: 1px;}
+    </style>
+</head>
+<body>
+<nav class="navbar container mt-3">
+    <a class="navbar-brand text-decoration-none fs-2 fw-bold text-white" href="/">FITNESS <span class="highlight">KINGDOM</span></a>
+    <div>
+        <a href="/search" class="btn btn-outline-info rounded-pill px-4 me-2 btn-action">Search Members</a>
+        <a href="/payments" class="btn btn-outline-warning rounded-pill px-4 me-2 btn-action">Billing & Payments</a>
+        <a href="/logout" class="btn btn-outline-danger rounded-pill px-4 btn-action">Logout Admin</a>
+    </div>
+</nav>
+
+<div class="container pb-5">
+
+    <div th:if="${errorMsg}" class="alert alert-danger font-sans-serif shadow text-center fw-bold border-2 border-danger mt-3" th:text="${errorMsg}"></div>
+    <div th:if="${successMsg}" class="alert alert-success font-sans-serif shadow text-center fw-bold border-2 border-success mt-3" th:text="${successMsg}"></div>
+
+    <div class="glass-card shadow-lg mb-5" style="border-color: #FD7A3F;">
+        <h2 class="mb-4 fw-bold text-uppercase">PENDING <span class="highlight">APPROVALS</span></h2>
+
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead style="border-bottom: 2px solid #FD7A3F;">
+                <tr><th>ID</th><th>Name</th><th>Phone</th><th>NIC</th><th>Plan</th><th>Months</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="member : ${pendingMembers}">
+                    <td class="fw-bold text-warning" th:text="${member.id}"></td>
+                    <td th:text="${member.name}"></td>
+                    <td th:text="${member.phone}"></td>
+                    <td th:text="${member.nic}"></td>
+                    <td><span class="badge bg-secondary px-3 py-2 rounded-pill" th:text="${member.membershipPlan}"></span></td>
+                    <td th:text="${member.duration}"></td>
+                    <td>
+                        <a th:href="@{/approve/{id}(id=${member.id})}" class="btn btn-sm btn-success rounded-pill px-3 btn-action me-2">Approve</a>
+                        <button type="button" class="btn btn-sm btn-danger fw-bold text-uppercase"
+                                data-bs-toggle="modal" data-bs-target="#secureDeleteModal"
+                                th:attr="data-bs-id=${member.id}, data-bs-name=${member.name}">
+                            ❌ Reject
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${#lists.isEmpty(pendingMembers)}" class="alert alert-dark text-center mt-4 border-0" style="background: rgba(255,255,255,0.1); color: white;">
+            No pending registrations.
+        </div>
+    </div>
+
+    <div class="glass-card shadow-lg">
+        <h2 class="mb-4 fw-bold text-uppercase">ACTIVE <span class="highlight">MEMBERS</span></h2>
+
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead style="border-bottom: 2px solid #5cb85c;">
+                <tr><th>ID</th><th>Name</th><th>Phone</th><th>NIC</th><th>Plan</th><th>Months</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                <tr th:each="member : ${activeMembers}">
+                    <td class="fw-bold text-success" th:text="${member.id}"></td>
+                    <td th:text="${member.name}"></td>
+                    <td th:text="${member.phone}"></td>
+                    <td th:text="${member.nic}"></td>
+                    <td><span class="badge bg-success px-3 py-2 rounded-pill" th:text="${member.membershipPlan}"></span></td>
+                    <td th:text="${member.duration}"></td>
+                    <td>
+                        <a th:href="@{'/edit/' + ${member.id}}" class="btn btn-sm btn-outline-info fw-bold text-uppercase me-1">✏️ Edit</a>
+                        <button type="button" class="btn btn-sm btn-danger fw-bold text-uppercase"
+                                data-bs-toggle="modal" data-bs-target="#secureDeleteModal"
+                                th:attr="data-bs-id=${member.id}, data-bs-name=${member.name}">
+                            ❌ Delete
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${#lists.isEmpty(activeMembers)}" class="alert alert-dark text-center mt-4 border-0" style="background: rgba(255,255,255,0.1); color: white;">
+            No active members. Time to approve some!
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="secureDeleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background: rgba(20, 20, 20, 0.95); border: 2px solid #dc3545; border-radius: 15px; box-shadow: 0 0 20px rgba(220, 53, 69, 0.5);">
+            <div class="modal-header bg-danger text-white border-0">
+                <h5 class="modal-title fw-bold text-uppercase font-oswald letter-spacing-1">⚠️ Confirm Permanent Deletion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center font-sans-serif text-light">
+
+                <p class="fs-5 mb-4">Are you absolutely sure you want to delete <br>
+                    <strong id="modalMemberName" class="text-warning fs-3 text-uppercase"></strong> <br>
+                    (ID: <span id="modalMemberId" class="text-warning fw-bold"></span>)?
+                </p>
+
+                <form action="/deleteMember" method="POST">
+                    <input type="hidden" name="id" id="hiddenMemberId">
+
+                    <div class="alert alert-dark border-danger text-start p-3 mb-4 mt-2" style="background: rgba(0,0,0,0.5);">
+                        <label class="form-label text-uppercase text-danger fw-bold mb-1">Admin Authorization Required</label>
+                        <input type="password" class="form-control border-danger bg-dark text-white" name="adminPassword" placeholder="Enter Admin Password" required>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="#" id="modalEditBtn" class="btn btn-outline-info fw-bold text-uppercase px-4">✏️ Edit Instead</a>
+                        <button type="submit" class="btn btn-danger fw-bold text-uppercase px-4">🚨 Delete</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    var deleteModal = document.getElementById('secureDeleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+
+        var memberId = button.getAttribute('data-bs-id');
+        var memberName = button.getAttribute('data-bs-name');
+
+        document.getElementById('modalMemberName').textContent = memberName;
+        document.getElementById('modalMemberId').textContent = memberId;
+        document.getElementById('hiddenMemberId').value = memberId;
+
+        document.getElementById('modalEditBtn').href = '/edit/' + memberId;
+    });
+</script>
+</body>
+</html>

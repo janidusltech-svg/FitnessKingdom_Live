@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login - Fitness Kingdom</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Oswald', sans-serif; color: white; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('/images/gym-background.jpg') no-repeat center center fixed; background-size: cover; height: 100vh; letter-spacing: 1px;}
+        .highlight { color: #FD7A3F; }
+        .glass-card { background: rgba(0, 0, 0, 0.7); border: 1px solid #FD7A3F; border-radius: 15px; padding: 40px; margin-top: 100px; }
+        .form-control { background-color: rgba(255,255,255,0.1); color: white; border: 1px solid gray; font-family: sans-serif; }
+        .form-control:focus { background-color: rgba(255,255,255,0.2); color: white; border-color: #FD7A3F; box-shadow: none; }
+        .btn-login { background-color: #FD7A3F; color: white; font-weight: bold; width: 100%; border-radius: 50px; padding: 12px; border: none; font-size: 20px; text-transform: uppercase; margin-top: 20px;}
+        .btn-login:hover { background-color: white; color: #FD7A3F; }
+
+        /* New CSS for the Show Password Button */
+        .btn-toggle { background-color: rgba(255,255,255,0.1); border: 1px solid gray; border-left: none; color: #ccc; font-family: sans-serif; transition: 0.3s;}
+        .btn-toggle:hover { background-color: rgba(255,255,255,0.2); color: white; }
+    </style>
+</head>
+<body>
+<nav class="navbar container mt-3">
+    <a class="navbar-brand text-decoration-none fs-2 fw-bold text-white" href="/">FITNESS <span class="highlight">KINGDOM</span></a>
+    <a href="/" class="btn btn-outline-light rounded-pill px-4 text-uppercase">Back Home</a>
+</nav>
+
+<div class="container d-flex justify-content-center">
+    <div class="glass-card col-md-5 shadow-lg">
+        <h2 class="text-center mb-4 fw-bold text-uppercase">ADMIN <span class="highlight">PORTAL</span></h2>
+
+        <div th:if="${error}" class="alert alert-danger text-center font-sans-serif" th:text="${error}"></div>
+
+        <form action="/adminLogin" method="POST">
+            <div class="mb-3">
+                <label class="form-label text-uppercase">Username</label>
+                <input type="text" class="form-control" name="username" placeholder="Enter admin" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-uppercase">Password</label>
+                <div class="input-group">
+                    <input type="password" class="form-control" id="adminPassword" name="password" placeholder="Enter admin123" required style="border-right: none;">
+                    <button class="btn btn-toggle" type="button" id="toggleBtn" onclick="togglePassword()">Show</button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-login">ACCESS SYSTEM</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById("adminPassword");
+        const toggleButton = document.getElementById("toggleBtn");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleButton.innerText = "Hide";
+            toggleButton.style.color = "#FD7A3F"; // Lights up orange when showing
+        } else {
+            passwordInput.type = "password";
+            toggleButton.innerText = "Show";
+            toggleButton.style.color = "#ccc"; // Goes back to gray when hidden
+        }
+    }
+</script>
+</body>
+</html>

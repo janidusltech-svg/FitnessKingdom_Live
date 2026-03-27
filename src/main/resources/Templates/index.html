@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fitness Kingdom - Unleash Your Potential</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Oswald', sans-serif; color: white; background-color: #0a0a0a; letter-spacing: 1px; overflow-x: hidden; }
+        .highlight { color: #FD7A3F; }
+        .bg-highlight { background-color: #FD7A3F; }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop') no-repeat center center;
+            background-size: cover;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid #FD7A3F;
+        }
+
+        /* --- SLANTED SERVICES CARDS --- */
+        .service-card {
+            position: relative;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transition: transform 0.3s;
+        }
+        .service-card:hover { transform: translateY(-10px); }
+        .service-img { width: 100%; height: 100%; object-fit: cover; }
+
+        .slanted-label {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #1a1a1a;
+            padding: 40px 20px 20px;
+            /* This is the magic code for the slanted top! */
+            clip-path: polygon(0 25%, 100% 0, 100% 100%, 0% 100%);
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .service-card:hover .slanted-label { background-color: #FD7A3F; }
+        .service-card:hover .slanted-label h4 { color: black !important; font-weight: 700; }
+
+        /* --- ANIMATED STATS SECTION --- */
+        .stats-section {
+            background: url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1470&auto=format&fit=crop') fixed;
+            background-size: cover;
+            position: relative;
+            padding: 80px 0;
+        }
+        .stats-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); }
+        .stat-box { position: relative; z-index: 2; text-align: center; }
+        .stat-number { font-size: 5rem; font-weight: 700; color: #FD7A3F; display: inline-block; margin-bottom: 0;}
+        .stat-plus { font-size: 4rem; font-weight: 700; color: #FD7A3F; vertical-align: top;}
+
+        /* --- PROFESSIONAL FOOTER --- */
+        .footer-custom { background-color: #111; border-top: 1px solid #333; padding-top: 60px; padding-bottom: 30px;}
+        .footer-icon-circle {
+            width: 50px; height: 50px; border-radius: 50%;
+            background-color: #FD7A3F; color: white;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 1.2rem; margin-right: 15px;
+        }
+        .footer-contact-row { display: flex; align-items: center; margin-bottom: 25px; }
+        .footer-link { color: #aaa; text-decoration: none; font-family: sans-serif; display: block; margin-bottom: 10px; transition: 0.2s;}
+        .footer-link:hover { color: #FD7A3F; padding-left: 5px; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3 fixed-top shadow">
+    <div class="container">
+        <a class="navbar-brand fs-2 fw-bold text-white" href="/">FITNESS <span class="highlight">KINGDOM</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item"><a class="nav-link active text-uppercase px-3" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase px-3" href="#services">Services</a></li>
+                <li class="nav-item"><a class="nav-link text-uppercase px-3" href="/register">Join Now</a></li>
+                <li class="nav-item ms-3">
+                    <a class="btn btn-outline-warning rounded-pill px-4 fw-bold text-uppercase" href="/login">Admin Portal</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<section class="hero-section mt-5">
+    <div class="container text-center">
+        <h1 class="display-1 fw-bold text-uppercase mb-3">Build Your <span class="highlight">Legacy</span></h1>
+        <p class="fs-4 mb-5 font-sans-serif" style="color: #ccc;">Sri Lanka's premier destination for serious results.</p>
+        <a href="/register" class="btn btn-lg rounded-pill px-5 py-3 fw-bold text-uppercase text-black" style="background-color: #FD7A3F;">Start Your Journey</a>
+    </div>
+</section>
+
+<section id="services" class="container py-5 mt-5 mb-5">
+    <h2 class="text-center display-5 fw-bold text-uppercase mb-5">Services We <span class="highlight">Offer</span></h2>
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop" class="service-img" alt="Strength Training">
+                <div class="slanted-label">
+                    <h4 class="text-white text-uppercase mb-0">Strength Training</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=1470&auto=format&fit=crop" class="service-img" alt="Cardio Fitness">
+                <div class="slanted-label">
+                    <h4 class="text-white text-uppercase mb-0">Cardio Fitness</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="service-card">
+                <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=1469&auto=format&fit=crop" class="service-img" alt="Personal Coaching">
+                <div class="slanted-label">
+                    <h4 class="text-white text-uppercase mb-0">Personal Coaching</h4>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section class="stats-section">
+    <div class="stats-overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <div class="col-md-5 stat-box">
+                <h3 class="text-uppercase text-white mb-2">Years of Experience</h3>
+                <div>
+                    <span class="stat-number count-up" data-target="10">0</span><span class="stat-plus">+</span>
+                </div>
+                <p class="font-sans-serif text-secondary mt-2">Guiding athletes to perfection</p>
+            </div>
+
+            <div class="col-md-5 stat-box">
+                <h3 class="text-uppercase text-white mb-2">Total Registered Members</h3>
+                <div>
+                    <span class="stat-number count-up" th:data-target="${totalMembers}">0</span><span class="stat-plus">+</span>
+                </div>
+                <p class="font-sans-serif text-secondary mt-2">Trust built over time</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer class="footer-custom">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4 mb-4">
+                <h3 class="fw-bold text-white mb-4">FITNESS <span class="highlight">KINGDOM</span></h3>
+                <p class="font-sans-serif text-secondary pe-4">Transforming bodies and building confidence since day one. Join the elite community of dedicated athletes.</p>
+                <div class="d-flex mt-4">
+                    <a href="#" class="text-white me-3 fs-4"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-white me-3 fs-4"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white me-3 fs-4"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4 ps-md-5">
+                <h4 class="text-white text-uppercase mb-4">Useful Links</h4>
+                <a href="/" class="footer-link">Home Page</a>
+                <a href="/register" class="footer-link">Join the Gym</a>
+                <a href="/login" class="footer-link">Admin Portal</a>
+                <a href="#" class="footer-link">Privacy Policy</a>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <h4 class="text-white text-uppercase mb-4">Contact Us</h4>
+
+                <div class="footer-contact-row">
+                    <div class="footer-icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h6 class="text-white mb-0 text-uppercase">Headquarters</h6>
+                        <span class="font-sans-serif text-secondary">Colombo, Sri Lanka</span>
+                    </div>
+                </div>
+
+                <div class="footer-contact-row">
+                    <div class="footer-icon-circle"><i class="fas fa-phone-alt"></i></div>
+                    <div>
+                        <h6 class="text-white mb-0 text-uppercase">Hotline</h6>
+                        <span class="font-sans-serif text-secondary">+94 77 123 4567</span>
+                    </div>
+                </div>
+
+                <div class="footer-contact-row">
+                    <div class="footer-icon-circle"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <h6 class="text-white mb-0 text-uppercase">Email Support</h6>
+                        <span class="font-sans-serif text-secondary">support@fitnesskingdom.lk</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row mt-5 pt-3 border-top border-secondary text-center">
+            <p class="font-sans-serif text-secondary mb-0">&copy; 2026 Fitness Kingdom. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // The JavaScript that makes the numbers spin up from 0 when you scroll to them
+    const counters = document.querySelectorAll('.count-up');
+    const speed = 200; // The lower the number, the faster the spin!
+
+    const animateCounters = () => {
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+
+                // Calculate increment chunk
+                const inc = target / speed;
+
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 15);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCount();
+        });
+    };
+
+    // This Observer waits until the user scrolls down to the stats section before animating
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounters();
+                observer.disconnect(); // Only animate once
+            }
+        });
+    }, { threshold: 0.5 });
+
+    // Start observing the stats section
+    const statsSection = document.querySelector('.stats-section');
+    if(statsSection) observer.observe(statsSection);
+</script>
+</body>
+</html>
